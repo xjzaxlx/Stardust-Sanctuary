@@ -11,7 +11,8 @@ type FragmentMeshProps = {
   near: boolean;
   onNear: (fragmentId: string) => void;
   onLeave: (fragmentId: string) => void;
-  onConnect: (fragmentId: string) => void;
+  onStartConnection: (fragmentId: string) => void;
+  onTryConnect: (fragmentId: string) => void;
 };
 
 export function FragmentMesh({
@@ -20,7 +21,8 @@ export function FragmentMesh({
   near,
   onNear,
   onLeave,
-  onConnect,
+  onStartConnection,
+  onTryConnect,
 }: FragmentMeshProps) {
   const groupRef = useRef<THREE.Group>(null);
   const materialRef = useRef<THREE.MeshStandardMaterial>(null);
@@ -65,6 +67,7 @@ export function FragmentMesh({
   function handlePointerOver(event: ThreeEvent<PointerEvent>) {
     event.stopPropagation();
     onNear(fragment.id);
+    onTryConnect(fragment.id);
   }
 
   function handlePointerOut(event: ThreeEvent<PointerEvent>) {
@@ -72,15 +75,16 @@ export function FragmentMesh({
     onLeave(fragment.id);
   }
 
-  function handleClick(event: ThreeEvent<PointerEvent>) {
+  function handlePointerDown(event: ThreeEvent<PointerEvent>) {
     event.stopPropagation();
-    onConnect(fragment.id);
+    onStartConnection(fragment.id);
+    onTryConnect(fragment.id);
   }
 
   return (
     <group ref={groupRef} position={fragment.position}>
       <mesh
-        onClick={handleClick}
+        onPointerDown={handlePointerDown}
         onPointerOver={handlePointerOver}
         onPointerOut={handlePointerOut}
       >
@@ -97,7 +101,7 @@ export function FragmentMesh({
         />
       </mesh>
       <mesh
-        onClick={handleClick}
+        onPointerDown={handlePointerDown}
         onPointerOver={handlePointerOver}
         onPointerOut={handlePointerOut}
         scale={2.3}

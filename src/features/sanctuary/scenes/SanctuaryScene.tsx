@@ -1,6 +1,7 @@
 "use client";
 
 import { Sparkles } from "@react-three/drei";
+import { ConstellationConnector } from "@/features/sanctuary/components/ConstellationConnector";
 import { FragmentCluster } from "@/features/sanctuary/components/FragmentCluster";
 import { sanctuarySceneConfig } from "@/features/sanctuary/data/sceneConfig";
 import { CameraRig } from "@/features/sanctuary/scenes/CameraRig";
@@ -41,6 +42,7 @@ export function SanctuaryScene() {
         opacity={0.2}
         color="#eef9ff"
       />
+      <ConstellationConnector />
       <FragmentCluster />
       <CentralAnchor />
       <PostProcessingPlaceholder />

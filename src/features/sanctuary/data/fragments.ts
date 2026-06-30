@@ -7,6 +7,13 @@ export type AnxietyFragment = {
   color: string;
 };
 
+export type FragmentConnection = {
+  fromId: string;
+  toId: string;
+};
+
+export type PreviewPoint = [number, number, number];
+
 export const anxietyFragments: AnxietyFragment[] = [
   {
     id: "overthinking",
@@ -57,3 +64,5 @@ export const anxietyFragments: AnxietyFragment[] = [
     color: "#d6f4ff",
   },
 ];
+
+export const fragmentConnectionOrder = anxietyFragments.map((fragment) => fragment.id);
