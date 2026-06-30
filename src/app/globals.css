@@ -1,0 +1,346 @@
+:root {
+  color-scheme: dark;
+  background: #02030a;
+  color: #f5f7ff;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  width: 100%;
+  min-height: 100%;
+  margin: 0;
+  overflow: hidden;
+}
+
+body {
+  background:
+    radial-gradient(circle at 50% 110%, rgba(25, 61, 96, 0.28), transparent 42%),
+    linear-gradient(180deg, #02030a 0%, #06111d 100%);
+}
+
+button {
+  font: inherit;
+}
+
+.sanctuary-shell {
+  position: fixed;
+  inset: 0;
+  min-height: 100svh;
+  overflow: hidden;
+  background: #02030a;
+}
+
+.sanctuary-shell__sky,
+.sanctuary-shell__shade,
+.sanctuary-canvas {
+  position: absolute;
+  inset: 0;
+}
+
+.sanctuary-shell__sky {
+  z-index: 0;
+  background:
+    radial-gradient(circle at 42% 44%, rgba(64, 111, 145, 0.14), transparent 34%),
+    radial-gradient(circle at 74% 18%, rgba(120, 91, 132, 0.1), transparent 28%),
+    #02030a;
+}
+
+.sanctuary-shell__shade {
+  z-index: 2;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at 50% 48%, transparent 0%, transparent 54%, rgba(0, 0, 0, 0.58) 100%),
+    linear-gradient(180deg, rgba(2, 3, 10, 0.28), rgba(2, 3, 10, 0.42));
+}
+
+.sanctuary-canvas {
+  z-index: 1;
+}
+
+.sanctuary-canvas canvas {
+  display: block;
+}
+
+.sanctuary-shell__ui {
+  position: absolute;
+  z-index: 4;
+  top: clamp(22px, 4vw, 48px);
+  left: clamp(20px, 5vw, 64px);
+  pointer-events: none;
+}
+
+.sanctuary-shell__kicker,
+.sanctuary-intro__eyebrow,
+.sanctuary-shell__chapter,
+.sanctuary-mouse-hint {
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.sanctuary-shell__kicker {
+  margin: 0 0 12px;
+  color: rgba(217, 238, 255, 0.58);
+  font-size: 12px;
+}
+
+.sanctuary-shell__chapter {
+  color: rgba(248, 252, 255, 0.78);
+  font-size: clamp(12px, 1.6vw, 14px);
+}
+
+.sanctuary-intro {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  display: grid;
+  place-items: center;
+  padding: clamp(24px, 6vw, 72px);
+  background: rgba(2, 3, 10, 0.54);
+}
+
+.sanctuary-intro__inner {
+  width: min(680px, 100%);
+  text-align: center;
+}
+
+.sanctuary-intro__eyebrow {
+  margin: 0;
+  color: rgba(207, 232, 255, 0.62);
+  font-size: 12px;
+}
+
+.sanctuary-intro h1 {
+  margin: 16px 0 0;
+  color: #f8fbff;
+  font-size: clamp(42px, 9vw, 96px);
+  font-weight: 360;
+  line-height: 0.98;
+  letter-spacing: 0;
+}
+
+.sanctuary-intro__copy {
+  display: grid;
+  gap: 10px;
+  margin: clamp(26px, 5vw, 42px) auto 0;
+  max-width: 560px;
+  color: rgba(235, 244, 255, 0.78);
+  font-size: clamp(15px, 2vw, 18px);
+  line-height: 1.75;
+}
+
+.sanctuary-intro__copy p {
+  margin: 0;
+}
+
+.sanctuary-intro__button {
+  min-height: 48px;
+  margin-top: clamp(30px, 5vw, 46px);
+  padding: 0 24px;
+  border: 1px solid rgba(212, 235, 255, 0.36);
+  border-radius: 999px;
+  color: rgba(250, 253, 255, 0.94);
+  background: rgba(10, 22, 34, 0.62);
+  box-shadow: 0 0 32px rgba(125, 190, 230, 0.12);
+  cursor: pointer;
+  transition:
+    border-color 180ms ease,
+    background 180ms ease,
+    transform 180ms ease;
+}
+
+.sanctuary-intro__button:hover {
+  border-color: rgba(228, 244, 255, 0.64);
+  background: rgba(16, 34, 50, 0.72);
+  transform: translateY(-1px);
+}
+
+.sanctuary-intro__button:focus-visible {
+  outline: 2px solid rgba(213, 239, 255, 0.86);
+  outline-offset: 4px;
+}
+
+.sanctuary-narration {
+  position: absolute;
+  z-index: 4;
+  left: clamp(20px, 5vw, 64px);
+  bottom: clamp(34px, 7vh, 76px);
+  max-width: min(560px, calc(100vw - 40px));
+  pointer-events: none;
+}
+
+.sanctuary-narration p {
+  margin: 0;
+  color: rgba(250, 253, 255, 0.9);
+  font-size: clamp(21px, 3.2vw, 40px);
+  font-weight: 300;
+  line-height: 1.35;
+  text-wrap: balance;
+}
+
+.sanctuary-mouse-hint {
+  position: absolute;
+  z-index: 4;
+  right: clamp(20px, 5vw, 64px);
+  bottom: clamp(26px, 6vh, 64px);
+  margin: 0;
+  color: rgba(210, 232, 255, 0.52);
+  font-size: 11px;
+  pointer-events: none;
+}
+
+.sanctuary {
+  position: fixed;
+  inset: 0;
+  min-height: 100svh;
+  background: #02030a;
+}
+
+.sanctuary__canvas {
+  position: absolute;
+  inset: 0;
+}
+
+.sanctuary__vignette {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at center, transparent 0%, transparent 54%, rgba(0, 0, 0, 0.56) 100%),
+    linear-gradient(180deg, rgba(2, 3, 10, 0.18), rgba(2, 3, 10, 0.64));
+}
+
+.sanctuary__title {
+  position: absolute;
+  top: clamp(24px, 5vw, 56px);
+  left: clamp(22px, 6vw, 72px);
+  max-width: min(430px, calc(100vw - 44px));
+  pointer-events: none;
+}
+
+.sanctuary__title p,
+.sanctuary__narration p {
+  margin: 0;
+}
+
+.sanctuary__eyebrow {
+  color: rgba(202, 231, 255, 0.58);
+  font-size: 12px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.sanctuary__title h1 {
+  margin: 10px 0 0;
+  color: #f7fbff;
+  font-size: clamp(32px, 7vw, 84px);
+  font-weight: 400;
+  line-height: 0.94;
+  letter-spacing: 0;
+}
+
+.sanctuary__constellation {
+  margin-top: 18px;
+  color: rgba(226, 240, 255, 0.72);
+  font-size: clamp(14px, 2vw, 18px);
+  line-height: 1.6;
+}
+
+.sanctuary__narration {
+  position: absolute;
+  right: clamp(22px, 6vw, 76px);
+  bottom: clamp(56px, 10vh, 108px);
+  max-width: min(520px, calc(100vw - 44px));
+  color: rgba(250, 253, 255, 0.92);
+  font-size: clamp(20px, 3vw, 38px);
+  font-weight: 300;
+  line-height: 1.35;
+  text-align: right;
+  text-wrap: balance;
+  pointer-events: none;
+}
+
+.sanctuary__audio {
+  position: absolute;
+  right: clamp(18px, 4vw, 40px);
+  top: clamp(18px, 4vw, 36px);
+  z-index: 2;
+}
+
+.sanctuary__audio-button {
+  min-width: 112px;
+  min-height: 40px;
+  padding: 0 16px;
+  border: 1px solid rgba(197, 232, 255, 0.26);
+  border-radius: 999px;
+  color: rgba(245, 250, 255, 0.86);
+  background: rgba(4, 10, 18, 0.36);
+  backdrop-filter: blur(14px);
+  cursor: pointer;
+  transition:
+    border-color 180ms ease,
+    background 180ms ease,
+    color 180ms ease;
+}
+
+.sanctuary__audio-button:hover {
+  border-color: rgba(216, 241, 255, 0.52);
+  background: rgba(13, 28, 42, 0.48);
+  color: #ffffff;
+}
+
+@media (max-width: 720px) {
+  .sanctuary-shell__ui {
+    top: 22px;
+    left: 20px;
+  }
+
+  .sanctuary-intro {
+    align-items: center;
+    padding: 24px 20px;
+  }
+
+  .sanctuary-intro__inner {
+    text-align: left;
+  }
+
+  .sanctuary-intro h1 {
+    max-width: 7ch;
+  }
+
+  .sanctuary-narration {
+    left: 20px;
+    right: 20px;
+    bottom: 74px;
+  }
+
+  .sanctuary-mouse-hint {
+    right: auto;
+    left: 20px;
+    bottom: 28px;
+  }
+
+  .sanctuary__title {
+    top: 26px;
+  }
+
+  .sanctuary__title h1 {
+    max-width: 8ch;
+  }
+
+  .sanctuary__narration {
+    right: 22px;
+    bottom: 38px;
+    text-align: left;
+  }
+
+  .sanctuary__audio {
+    top: auto;
+    right: 22px;
+    bottom: 20px;
+  }
+}
