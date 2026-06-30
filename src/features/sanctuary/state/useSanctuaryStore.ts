@@ -6,12 +6,15 @@ type SanctuaryState = {
   currentChapterLabel: string;
   activeConstellationIndex: number;
   connectedFragmentIds: string[];
+  nearFragmentId: string | null;
   isAudioEnabled: boolean;
   enterSanctuary: () => void;
   setActiveConstellationIndex: (index: number) => void;
   setCurrentNarration: (text: string) => void;
   connectFragment: (fragmentId: string) => void;
   resetFragments: () => void;
+  setNearFragmentId: (fragmentId: string) => void;
+  clearNearFragmentId: (fragmentId: string) => void;
   setAudioEnabled: (isEnabled: boolean) => void;
 };
 
@@ -21,6 +24,7 @@ export const useSanctuaryStore = create<SanctuaryState>((set) => ({
   currentChapterLabel: "Chapter 01 / 初入夜空",
   activeConstellationIndex: 0,
   connectedFragmentIds: [],
+  nearFragmentId: null,
   isAudioEnabled: false,
   enterSanctuary: () =>
     set({
@@ -37,8 +41,14 @@ export const useSanctuaryStore = create<SanctuaryState>((set) => ({
 
       return {
         connectedFragmentIds: [...state.connectedFragmentIds, fragmentId],
+        currentNarration: "它被看见了，也就不必独自漂浮。",
       };
     }),
   resetFragments: () => set({ connectedFragmentIds: [] }),
+  setNearFragmentId: (fragmentId) => set({ nearFragmentId: fragmentId }),
+  clearNearFragmentId: (fragmentId) =>
+    set((state) => ({
+      nearFragmentId: state.nearFragmentId === fragmentId ? null : state.nearFragmentId,
+    })),
   setAudioEnabled: (isEnabled) => set({ isAudioEnabled: isEnabled }),
 }));
