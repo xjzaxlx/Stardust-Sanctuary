@@ -1,6 +1,10 @@
 "use client";
 
+import { useCallback } from "react";
+import { useSanctuaryAudio } from "@/features/sanctuary/audio/useSanctuaryAudio";
+import { AudioToggle } from "@/features/sanctuary/components/AudioToggle";
 import { IntroOverlay } from "@/features/sanctuary/components/IntroOverlay";
+import { ChapterAction } from "@/features/sanctuary/components/ChapterAction";
 import { MouseHint } from "@/features/sanctuary/components/MouseHint";
 import { NarrationPanel } from "@/features/sanctuary/components/NarrationPanel";
 import { SanctuaryCanvas } from "@/features/sanctuary/scenes/SanctuaryCanvas";
@@ -11,13 +15,18 @@ export function SanctuaryExperience() {
   const enterSanctuary = useSanctuaryStore((state) => state.enterSanctuary);
   const currentNarration = useSanctuaryStore((state) => state.currentNarration);
   const currentChapterLabel = useSanctuaryStore((state) => state.currentChapterLabel);
+  const { initialize, isMuted, isReady, toggleMuted } = useSanctuaryAudio();
+  const handleEnter = useCallback(() => {
+    void initialize().catch(() => undefined);
+    enterSanctuary();
+  }, [enterSanctuary, initialize]);
 
   return (
     <main className="sanctuary-shell" data-entered={hasEntered}>
       {hasEntered ? <SanctuaryCanvas /> : null}
       <div className="sanctuary-shell__sky" aria-hidden="true" />
       <div className="sanctuary-shell__shade" aria-hidden="true" />
-      {!hasEntered ? <IntroOverlay onEnter={enterSanctuary} /> : null}
+      {!hasEntered ? <IntroOverlay onEnter={handleEnter} /> : null}
       <div className="sanctuary-shell__ui">
         <p className="sanctuary-shell__kicker">Stardust Sanctuary</p>
         <div className="sanctuary-shell__chapter" aria-label="Current chapter">
@@ -25,8 +34,12 @@ export function SanctuaryExperience() {
         </div>
       </div>
       {hasEntered ? (
+        <AudioToggle isMuted={isMuted} isReady={isReady} onToggle={toggleMuted} />
+      ) : null}
+      {hasEntered ? (
         <>
           <NarrationPanel text={currentNarration} />
+          <ChapterAction />
           <MouseHint />
         </>
       ) : null}

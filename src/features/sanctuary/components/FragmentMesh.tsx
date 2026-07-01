@@ -4,6 +4,7 @@ import { ThreeEvent, useFrame } from "@react-three/fiber";
 import { useRef } from "react";
 import * as THREE from "three";
 import type { AnxietyFragment } from "@/features/sanctuary/data/fragments";
+import { useSanctuaryStore } from "@/features/sanctuary/state/useSanctuaryStore";
 
 type FragmentMeshProps = {
   fragment: AnxietyFragment;
@@ -28,6 +29,9 @@ export function FragmentMesh({
   const materialRef = useRef<THREE.MeshStandardMaterial>(null);
   const basePosition = useRef(new THREE.Vector3(...fragment.position));
   const driftPhase = fragment.emotionWeight * 8.7;
+  const fragmentGlowMultiplier = useSanctuaryStore(
+    (state) => state.currentSceneTuning.fragmentGlowMultiplier,
+  );
 
   useFrame(({ clock }) => {
     const group = groupRef.current;
@@ -54,7 +58,7 @@ export function FragmentMesh({
 
     material.emissiveIntensity = THREE.MathUtils.lerp(
       material.emissiveIntensity,
-      connected ? 0.76 : near ? 0.64 : 0.24,
+      (connected ? 0.76 : near ? 0.64 : 0.24) * fragmentGlowMultiplier,
       0.08,
     );
     material.opacity = THREE.MathUtils.lerp(

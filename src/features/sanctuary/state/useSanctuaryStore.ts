@@ -1,5 +1,10 @@
 import { create } from "zustand";
 import {
+  getSanctuaryChapter,
+  type ChapterId,
+  type SceneTuning,
+} from "@/features/sanctuary/data/chapters";
+import {
   fragmentConnectionOrder,
   type FragmentConnection,
   type PreviewPoint,
@@ -15,7 +20,8 @@ type SanctuaryState = {
   hasEntered: boolean;
   currentNarration: string;
   currentChapterLabel: string;
-  currentChapter: number;
+  currentChapter: ChapterId;
+  currentSceneTuning: SceneTuning;
   activeConstellationIndex: number;
   activeFragmentId: string | null;
   connectedFragmentIds: string[];
@@ -25,6 +31,7 @@ type SanctuaryState = {
   constellationComplete: boolean;
   isAudioEnabled: boolean;
   enterSanctuary: () => void;
+  transitionToChapter: (chapterId: ChapterId) => void;
   setActiveConstellationIndex: (index: number) => void;
   setCurrentNarration: (text: string) => void;
   startConnection: (fragmentId: string) => void;
@@ -39,16 +46,25 @@ type SanctuaryState = {
   setAudioEnabled: (isEnabled: boolean) => void;
 };
 
-const openingNarration = "把散落的念头，慢慢放回夜空。";
-const enteredNarration = "每一块碎片，都不是错误。";
-const connectedNarration = "它被看见了，也就不必独自漂浮。";
-const completeNarration = "它们连在一起时，你也不必独自承担。";
+function chapterState(chapterId: ChapterId) {
+  const chapter = getSanctuaryChapter(chapterId);
+
+  return {
+    currentChapter: chapter.id,
+    currentChapterLabel: chapter.label,
+    currentNarration: chapter.narration,
+    currentSceneTuning: chapter.sceneTuning,
+  };
+}
+
+const initialChapter = getSanctuaryChapter(0);
 
 export const useSanctuaryStore = create<SanctuaryState>((set) => ({
   hasEntered: false,
-  currentNarration: openingNarration,
-  currentChapterLabel: "Chapter 01 / 初入夜空",
-  currentChapter: 1,
+  currentNarration: initialChapter.narration,
+  currentChapterLabel: initialChapter.label,
+  currentChapter: initialChapter.id,
+  currentSceneTuning: initialChapter.sceneTuning,
   activeConstellationIndex: 0,
   activeFragmentId: null,
   connectedFragmentIds: [],
@@ -60,8 +76,9 @@ export const useSanctuaryStore = create<SanctuaryState>((set) => ({
   enterSanctuary: () =>
     set({
       hasEntered: true,
-      currentNarration: enteredNarration,
+      ...chapterState(1),
     }),
+  transitionToChapter: (chapterId) => set(chapterState(chapterId)),
   setActiveConstellationIndex: (index) => set({ activeConstellationIndex: index }),
   setCurrentNarration: (text) => set({ currentNarration: text }),
   startConnection: (fragmentId) =>
@@ -74,7 +91,7 @@ export const useSanctuaryStore = create<SanctuaryState>((set) => ({
         activeFragmentId: fragmentId,
         connectedFragmentIds: [fragmentId],
         previewPoint: null,
-        currentNarration: "先从一块碎片开始，慢慢靠近下一点微光。",
+        ...chapterState(2),
       };
     }),
   updatePreviewPoint: (point) => set({ previewPoint: point }),
@@ -93,7 +110,7 @@ export const useSanctuaryStore = create<SanctuaryState>((set) => ({
           activeFragmentId: fragmentId,
           connectedFragmentIds: [fragmentId],
           previewPoint: null,
-          currentNarration: "第一块碎片安静下来了。",
+          ...chapterState(2),
         };
       }
 
@@ -114,11 +131,7 @@ export const useSanctuaryStore = create<SanctuaryState>((set) => ({
         connections,
         previewPoint: null,
         constellationComplete,
-        currentChapter: constellationComplete ? 2 : state.currentChapter,
-        currentChapterLabel: constellationComplete
-          ? "Chapter 02 / 星座成形"
-          : state.currentChapterLabel,
-        currentNarration: constellationComplete ? completeNarration : connectedNarration,
+        ...(constellationComplete ? chapterState(3) : {}),
       };
     }),
   completeConstellation: () =>
@@ -126,9 +139,7 @@ export const useSanctuaryStore = create<SanctuaryState>((set) => ({
       activeFragmentId: null,
       previewPoint: null,
       constellationComplete: true,
-      currentChapter: 2,
-      currentChapterLabel: "Chapter 02 / 星座成形",
-      currentNarration: completeNarration,
+      ...chapterState(3),
     }),
   resetConnectionFlow: () =>
     set({
@@ -138,9 +149,7 @@ export const useSanctuaryStore = create<SanctuaryState>((set) => ({
       previewPoint: null,
       nearFragmentId: null,
       constellationComplete: false,
-      currentChapter: 1,
-      currentChapterLabel: "Chapter 01 / 初入夜空",
-      currentNarration: enteredNarration,
+      ...chapterState(1),
     }),
   connectFragment: (fragmentId) =>
     set((state) => {
@@ -150,7 +159,6 @@ export const useSanctuaryStore = create<SanctuaryState>((set) => ({
 
       return {
         connectedFragmentIds: [...state.connectedFragmentIds, fragmentId],
-        currentNarration: connectedNarration,
       };
     }),
   resetFragments: () => set({ connectedFragmentIds: [] }),

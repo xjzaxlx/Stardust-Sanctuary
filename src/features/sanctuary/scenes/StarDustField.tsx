@@ -4,6 +4,7 @@ import { useFrame } from "@react-three/fiber";
 import { useMemo, useRef } from "react";
 import * as THREE from "three";
 import { sanctuarySceneConfig } from "@/features/sanctuary/data/sceneConfig";
+import { useSanctuaryStore } from "@/features/sanctuary/state/useSanctuaryStore";
 
 function seededRandom(seed: number) {
   const value = Math.sin(seed * 19.91) * 9137.31;
@@ -45,7 +46,12 @@ function buildDustPositions() {
 
 export function StarDustField() {
   const pointsRef = useRef<THREE.Points>(null);
+  const materialRef = useRef<THREE.PointsMaterial>(null);
   const positions = useMemo(() => buildDustPositions(), []);
+  const dustSpeedMultiplier = useSanctuaryStore(
+    (state) => state.currentSceneTuning.dustSpeedMultiplier,
+  );
+  const dustOpacity = useSanctuaryStore((state) => state.currentSceneTuning.dustOpacity);
 
   useFrame(({ clock, pointer }) => {
     if (!pointsRef.current) {
@@ -53,9 +59,17 @@ export function StarDustField() {
     }
 
     pointsRef.current.rotation.y =
-      clock.elapsedTime * sanctuarySceneConfig.dust.driftSpeed +
+      clock.elapsedTime * sanctuarySceneConfig.dust.driftSpeed * dustSpeedMultiplier +
       pointer.x * sanctuarySceneConfig.dust.parallaxRotation.y;
     pointsRef.current.rotation.x = pointer.y * sanctuarySceneConfig.dust.parallaxRotation.x;
+
+    if (materialRef.current) {
+      materialRef.current.opacity = THREE.MathUtils.lerp(
+        materialRef.current.opacity,
+        dustOpacity,
+        0.04,
+      );
+    }
   });
 
   return (
@@ -64,6 +78,7 @@ export function StarDustField() {
         <bufferAttribute attach="attributes-position" args={[positions, 3]} />
       </bufferGeometry>
       <pointsMaterial
+        ref={materialRef}
         color="#d7ecff"
         size={sanctuarySceneConfig.dust.pointSize}
         transparent

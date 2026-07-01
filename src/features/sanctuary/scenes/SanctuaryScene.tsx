@@ -7,6 +7,7 @@ import { sanctuarySceneConfig } from "@/features/sanctuary/data/sceneConfig";
 import { CameraRig } from "@/features/sanctuary/scenes/CameraRig";
 import { SoftBackground } from "@/features/sanctuary/scenes/SoftBackground";
 import { StarDustField } from "@/features/sanctuary/scenes/StarDustField";
+import { useSanctuaryStore } from "@/features/sanctuary/state/useSanctuaryStore";
 
 function PostProcessingPlaceholder() {
   return null;
@@ -29,6 +30,10 @@ function CentralAnchor() {
 }
 
 export function SanctuaryScene() {
+  const sparklesOpacity = useSanctuaryStore(
+    (state) => state.currentSceneTuning.sparklesOpacity,
+  );
+
   return (
     <>
       <SoftBackground />
@@ -39,7 +44,7 @@ export function SanctuaryScene() {
         scale={[5.2, 2.6, 3.6]}
         size={1.1}
         speed={0.08}
-        opacity={0.2}
+        opacity={sparklesOpacity}
         color="#eef9ff"
       />
       <ConstellationConnector />
