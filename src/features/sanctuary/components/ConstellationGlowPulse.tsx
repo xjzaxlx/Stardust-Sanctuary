@@ -42,8 +42,8 @@ export function ConstellationGlowPulse({ active }: ConstellationGlowPulseProps) 
     const easeOut = 1 - Math.pow(1 - progress, 3);
 
     mesh.visible = progress < 1;
-    mesh.scale.setScalar(0.65 + easeOut * 3.4);
-    material.opacity = (1 - easeOut) * 0.22;
+    mesh.scale.setScalar(0.72 + easeOut * 2.7);
+    material.opacity = (1 - easeOut) * 0.14;
   });
 
   return (
@@ -51,7 +51,7 @@ export function ConstellationGlowPulse({ active }: ConstellationGlowPulseProps) 
       <sphereGeometry args={[sanctuarySceneConfig.anchor.radius, 32, 16]} />
       <meshBasicMaterial
         ref={materialRef}
-        color="#bfeeff"
+        color="#d8ecec"
         transparent
         opacity={0}
         depthWrite={false}

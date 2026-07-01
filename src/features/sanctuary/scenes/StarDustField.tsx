@@ -66,7 +66,7 @@ export function StarDustField() {
     if (materialRef.current) {
       materialRef.current.opacity = THREE.MathUtils.lerp(
         materialRef.current.opacity,
-        dustOpacity,
+        dustOpacity * sanctuarySceneConfig.artDirection.dustOpacityScale,
         0.04,
       );
     }
@@ -79,10 +79,10 @@ export function StarDustField() {
       </bufferGeometry>
       <pointsMaterial
         ref={materialRef}
-        color="#d7ecff"
+        color="#c9dce8"
         size={sanctuarySceneConfig.dust.pointSize}
         transparent
-        opacity={sanctuarySceneConfig.dust.opacity}
+        opacity={sanctuarySceneConfig.dust.opacity * sanctuarySceneConfig.artDirection.dustOpacityScale}
         depthWrite={false}
       />
     </points>

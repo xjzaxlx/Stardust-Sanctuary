@@ -4,6 +4,7 @@ import { ThreeEvent, useFrame } from "@react-three/fiber";
 import { useRef } from "react";
 import * as THREE from "three";
 import type { AnxietyFragment } from "@/features/sanctuary/data/fragments";
+import { sanctuarySceneConfig } from "@/features/sanctuary/data/sceneConfig";
 import { useSanctuaryStore } from "@/features/sanctuary/state/useSanctuaryStore";
 
 type FragmentMeshProps = {
@@ -29,6 +30,7 @@ export function FragmentMesh({
   const materialRef = useRef<THREE.MeshStandardMaterial>(null);
   const basePosition = useRef(new THREE.Vector3(...fragment.position));
   const driftPhase = fragment.emotionWeight * 8.7;
+  const fragmentSoftness = sanctuarySceneConfig.artDirection.fragmentSoftness;
   const fragmentGlowMultiplier = useSanctuaryStore(
     (state) => state.currentSceneTuning.fragmentGlowMultiplier,
   );
@@ -43,7 +45,7 @@ export function FragmentMesh({
 
     const time = clock.elapsedTime;
     const instability = connected ? 0.28 : 0.72 + fragment.emotionWeight * 0.28;
-    const targetScale = connected ? 1.1 : near ? 1.18 : 1;
+    const targetScale = connected ? 1.08 : near ? 1.15 : 1;
     const rotationSpeed = connected ? 0.18 : near ? 0.11 : 0.34 + fragment.emotionWeight * 0.16;
     const floatAmount = connected ? 0.025 : 0.065 * instability;
 
@@ -98,10 +100,20 @@ export function FragmentMesh({
           color={fragment.color}
           emissive={fragment.color}
           emissiveIntensity={connected ? 0.7 : 0.2}
-          roughness={0.48}
-          metalness={0.02}
+          roughness={0.86}
+          metalness={0}
           transparent
           opacity={connected ? 0.96 : 0.72}
+        />
+      </mesh>
+      <mesh scale={2.05 + fragmentSoftness}>
+        <icosahedronGeometry args={[fragment.size, 1]} />
+        <meshBasicMaterial
+          color={fragment.color}
+          transparent
+          opacity={connected ? 0.12 : near ? 0.1 : 0.055}
+          depthWrite={false}
+          blending={THREE.AdditiveBlending}
         />
       </mesh>
       <mesh

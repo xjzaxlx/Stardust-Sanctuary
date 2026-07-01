@@ -33,10 +33,15 @@ button {
   min-height: 100svh;
   overflow: hidden;
   background: #02030a;
+  --sanctuary-grain-opacity: 0.075;
+  --sanctuary-paper-tint-opacity: 0.16;
+  --sanctuary-vignette-opacity: 0.72;
 }
 
 .sanctuary-shell__sky,
 .sanctuary-shell__shade,
+.sanctuary-shell__paper,
+.sanctuary-shell__vignette,
 .sanctuary-canvas {
   position: absolute;
   inset: 0;
@@ -45,8 +50,9 @@ button {
 .sanctuary-shell__sky {
   z-index: 0;
   background:
-    radial-gradient(circle at 42% 44%, rgba(64, 111, 145, 0.14), transparent 34%),
-    radial-gradient(circle at 74% 18%, rgba(120, 91, 132, 0.1), transparent 28%),
+    radial-gradient(circle at 42% 44%, rgba(78, 116, 139, 0.13), transparent 34%),
+    radial-gradient(circle at 74% 18%, rgba(124, 101, 126, 0.09), transparent 28%),
+    radial-gradient(circle at 18% 78%, rgba(86, 76, 104, 0.08), transparent 30%),
     #02030a;
 }
 
@@ -54,8 +60,42 @@ button {
   z-index: 2;
   pointer-events: none;
   background:
-    radial-gradient(circle at 50% 48%, transparent 0%, transparent 54%, rgba(0, 0, 0, 0.58) 100%),
-    linear-gradient(180deg, rgba(2, 3, 10, 0.28), rgba(2, 3, 10, 0.42));
+    radial-gradient(circle at 50% 48%, transparent 0%, transparent 62%, rgba(0, 0, 0, 0.3) 100%),
+    linear-gradient(180deg, rgba(10, 9, 18, 0.18), rgba(2, 3, 10, 0.32));
+}
+
+.sanctuary-shell__paper {
+  z-index: 3;
+  opacity: var(--sanctuary-grain-opacity);
+  mix-blend-mode: soft-light;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at 12% 18%, rgba(255, 255, 255, 0.72) 0 0.6px, transparent 0.9px),
+    radial-gradient(circle at 68% 38%, rgba(255, 255, 255, 0.58) 0 0.45px, transparent 0.85px),
+    radial-gradient(circle at 34% 74%, rgba(255, 255, 255, 0.45) 0 0.5px, transparent 0.9px),
+    repeating-linear-gradient(
+      94deg,
+      rgba(255, 255, 255, 0.22) 0 1px,
+      transparent 1px 5px
+    );
+  background-size:
+    31px 29px,
+    43px 41px,
+    37px 47px,
+    11px 11px;
+}
+
+.sanctuary-shell__vignette {
+  z-index: 3;
+  opacity: var(--sanctuary-vignette-opacity);
+  pointer-events: none;
+  background:
+    radial-gradient(circle at 48% 44%, transparent 0%, transparent 58%, rgba(8, 5, 13, 0.42) 100%),
+    linear-gradient(
+      180deg,
+      rgba(224, 205, 184, var(--sanctuary-paper-tint-opacity)),
+      rgba(47, 33, 70, 0.06)
+    );
 }
 
 .sanctuary-canvas {

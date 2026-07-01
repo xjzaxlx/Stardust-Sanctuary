@@ -48,4 +48,14 @@ export const sanctuarySceneConfig = {
     luminanceSmoothing: 0.22,
     mipmapBlur: true,
   },
+  artDirection: {
+    grainEnabled: true,
+    grainOpacity: 0.075,
+    vignetteOpacity: 0.72,
+    paperTintOpacity: 0.16,
+    fragmentSoftness: 0.34,
+    lineJitter: 0.08,
+    lineGlowOpacity: 0.12,
+    dustOpacityScale: 0.82,
+  },
 };
