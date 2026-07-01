@@ -7,6 +7,7 @@ import {
   type PreviewPoint,
 } from "@/features/sanctuary/data/fragments";
 import { useSanctuaryStore } from "@/features/sanctuary/state/useSanctuaryStore";
+import { ConstellationGlowPulse } from "@/features/sanctuary/components/ConstellationGlowPulse";
 import { ConnectionLine } from "@/features/sanctuary/components/ConnectionLine";
 import { PreviewLine } from "@/features/sanctuary/components/PreviewLine";
 
@@ -42,9 +43,11 @@ export function ConstellationConnector() {
           key={`${connection.fromId}-${connection.toId}`}
           connection={connection}
           fragmentsById={fragmentsById}
+          isConstellationComplete={constellationComplete}
           pulseIndex={index}
         />
       ))}
+      <ConstellationGlowPulse active={constellationComplete} />
       {!constellationComplete ? (
         <PreviewLine activeFragment={activeFragment} previewPoint={previewPoint} />
       ) : null}

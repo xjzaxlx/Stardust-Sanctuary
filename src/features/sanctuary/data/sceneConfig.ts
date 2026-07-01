@@ -27,16 +27,25 @@ export const sanctuarySceneConfig = {
   },
   fog: {
     color: "#02030a",
-    near: 5.7,
-    far: 12.4,
+    near: 4.9,
+    far: 11.2,
   },
   lighting: {
-    ambientIntensity: 0.26,
-    keyIntensity: 1.05,
-    fillIntensity: 0.34,
+    ambientIntensity: 0.24,
+    keyIntensity: 1.08,
+    fillIntensity: 0.38,
   },
   anchor: {
     position: [0, 0, -0.55] as [number, number, number],
     radius: 0.22,
+  },
+  postprocessing: {
+    enabled: true,
+    mobileEnabled: false,
+    lowPerformanceEnabled: false,
+    bloomIntensity: 0.38,
+    luminanceThreshold: 0.82,
+    luminanceSmoothing: 0.22,
+    mipmapBlur: true,
   },
 };

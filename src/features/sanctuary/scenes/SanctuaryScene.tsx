@@ -5,13 +5,10 @@ import { ConstellationConnector } from "@/features/sanctuary/components/Constell
 import { FragmentCluster } from "@/features/sanctuary/components/FragmentCluster";
 import { sanctuarySceneConfig } from "@/features/sanctuary/data/sceneConfig";
 import { CameraRig } from "@/features/sanctuary/scenes/CameraRig";
+import { SanctuaryPostProcessing } from "@/features/sanctuary/scenes/SanctuaryPostProcessing";
 import { SoftBackground } from "@/features/sanctuary/scenes/SoftBackground";
 import { StarDustField } from "@/features/sanctuary/scenes/StarDustField";
 import { useSanctuaryStore } from "@/features/sanctuary/state/useSanctuaryStore";
-
-function PostProcessingPlaceholder() {
-  return null;
-}
 
 function CentralAnchor() {
   return (
@@ -50,7 +47,7 @@ export function SanctuaryScene() {
       <ConstellationConnector />
       <FragmentCluster />
       <CentralAnchor />
-      <PostProcessingPlaceholder />
+      <SanctuaryPostProcessing />
     </>
   );
 }

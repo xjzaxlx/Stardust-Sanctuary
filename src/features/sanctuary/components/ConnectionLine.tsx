@@ -8,11 +8,18 @@ import type { FragmentConnection } from "@/features/sanctuary/data/fragments";
 type ConnectionLineProps = {
   connection: FragmentConnection;
   fragmentsById: Map<string, AnxietyFragment>;
+  isConstellationComplete: boolean;
   pulseIndex: number;
 };
 
-export function ConnectionLine({ connection, fragmentsById, pulseIndex }: ConnectionLineProps) {
-  const glowOpacity = 0.14 + (pulseIndex % 3) * 0.015;
+export function ConnectionLine({
+  connection,
+  fragmentsById,
+  isConstellationComplete,
+  pulseIndex,
+}: ConnectionLineProps) {
+  const glowOpacity =
+    0.14 + (pulseIndex % 3) * 0.015 + (isConstellationComplete ? 0.08 : 0);
   const points = useMemo(() => {
     const from = fragmentsById.get(connection.fromId);
     const to = fragmentsById.get(connection.toId);
@@ -30,11 +37,17 @@ export function ConnectionLine({ connection, fragmentsById, pulseIndex }: Connec
 
   return (
     <>
-      <Line points={points} color="#eefbff" lineWidth={1.1} transparent opacity={0.78} />
+      <Line
+        points={points}
+        color="#eefbff"
+        lineWidth={1.1}
+        transparent
+        opacity={isConstellationComplete ? 0.86 : 0.78}
+      />
       <Line
         points={points}
         color="#8fdcff"
-        lineWidth={4.2}
+        lineWidth={isConstellationComplete ? 5.2 : 4.2}
         transparent
         opacity={glowOpacity}
       />

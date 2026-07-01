@@ -58,7 +58,7 @@ export function FragmentMesh({
 
     material.emissiveIntensity = THREE.MathUtils.lerp(
       material.emissiveIntensity,
-      (connected ? 0.76 : near ? 0.64 : 0.24) * fragmentGlowMultiplier,
+      (connected ? 0.7 : near ? 0.56 : 0.2) * fragmentGlowMultiplier,
       0.08,
     );
     material.opacity = THREE.MathUtils.lerp(
@@ -97,7 +97,7 @@ export function FragmentMesh({
           ref={materialRef}
           color={fragment.color}
           emissive={fragment.color}
-          emissiveIntensity={connected ? 0.76 : 0.24}
+          emissiveIntensity={connected ? 0.7 : 0.2}
           roughness={0.48}
           metalness={0.02}
           transparent
