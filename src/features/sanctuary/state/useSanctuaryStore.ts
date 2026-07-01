@@ -2,13 +2,17 @@ import { create } from "zustand";
 import {
   getSanctuaryChapter,
   type ChapterId,
-  type SceneTuning,
 } from "@/features/sanctuary/data/chapters";
 import {
-  fragmentConnectionOrder,
+  defaultSanctuaryConstellationId,
+  getSanctuaryConstellation,
+  type SanctuaryConstellationId,
+} from "@/features/sanctuary/data/constellations";
+import {
   type FragmentConnection,
   type PreviewPoint,
 } from "@/features/sanctuary/data/fragments";
+import type { SceneTuning } from "@/features/sanctuary/data/scenePresets";
 import {
   buildConnection,
   getNextFragmentId,
@@ -22,7 +26,7 @@ type SanctuaryState = {
   currentChapterLabel: string;
   currentChapter: ChapterId;
   currentSceneTuning: SceneTuning;
-  activeConstellationIndex: number;
+  activeConstellationId: SanctuaryConstellationId;
   activeFragmentId: string | null;
   connectedFragmentIds: string[];
   connections: FragmentConnection[];
@@ -32,7 +36,7 @@ type SanctuaryState = {
   isAudioEnabled: boolean;
   enterSanctuary: () => void;
   transitionToChapter: (chapterId: ChapterId) => void;
-  setActiveConstellationIndex: (index: number) => void;
+  setActiveConstellationId: (constellationId: SanctuaryConstellationId) => void;
   setCurrentNarration: (text: string) => void;
   startConnection: (fragmentId: string) => void;
   updatePreviewPoint: (point: PreviewPoint | null) => void;
@@ -58,6 +62,7 @@ function chapterState(chapterId: ChapterId) {
 }
 
 const initialChapter = getSanctuaryChapter(0);
+const initialConstellation = getSanctuaryConstellation(defaultSanctuaryConstellationId);
 
 export const useSanctuaryStore = create<SanctuaryState>((set) => ({
   hasEntered: false,
@@ -65,7 +70,7 @@ export const useSanctuaryStore = create<SanctuaryState>((set) => ({
   currentChapterLabel: initialChapter.label,
   currentChapter: initialChapter.id,
   currentSceneTuning: initialChapter.sceneTuning,
-  activeConstellationIndex: 0,
+  activeConstellationId: initialConstellation.id,
   activeFragmentId: null,
   connectedFragmentIds: [],
   connections: [],
@@ -79,11 +84,22 @@ export const useSanctuaryStore = create<SanctuaryState>((set) => ({
       ...chapterState(1),
     }),
   transitionToChapter: (chapterId) => set(chapterState(chapterId)),
-  setActiveConstellationIndex: (index) => set({ activeConstellationIndex: index }),
+  setActiveConstellationId: (constellationId) =>
+    set({
+      activeConstellationId: constellationId,
+    }),
   setCurrentNarration: (text) => set({ currentNarration: text }),
   startConnection: (fragmentId) =>
     set((state) => {
-      if (!shouldStartConnection(fragmentConnectionOrder, state.connectedFragmentIds, fragmentId)) {
+      const constellation = getSanctuaryConstellation(state.activeConstellationId);
+
+      if (
+        !shouldStartConnection(
+          constellation.connectionOrder,
+          state.connectedFragmentIds,
+          fragmentId,
+        )
+      ) {
         return state;
       }
 
@@ -102,7 +118,15 @@ export const useSanctuaryStore = create<SanctuaryState>((set) => ({
       }
 
       if (!state.activeFragmentId) {
-        if (!shouldStartConnection(fragmentConnectionOrder, state.connectedFragmentIds, fragmentId)) {
+        const constellation = getSanctuaryConstellation(state.activeConstellationId);
+
+        if (
+          !shouldStartConnection(
+            constellation.connectionOrder,
+            state.connectedFragmentIds,
+            fragmentId,
+          )
+        ) {
           return state;
         }
 
@@ -114,7 +138,11 @@ export const useSanctuaryStore = create<SanctuaryState>((set) => ({
         };
       }
 
-      const nextFragmentId = getNextFragmentId(fragmentConnectionOrder, state.connectedFragmentIds);
+      const constellation = getSanctuaryConstellation(state.activeConstellationId);
+      const nextFragmentId = getNextFragmentId(
+        constellation.connectionOrder,
+        state.connectedFragmentIds,
+      );
 
       if (fragmentId !== nextFragmentId || state.connectedFragmentIds.includes(fragmentId)) {
         return state;
@@ -123,7 +151,10 @@ export const useSanctuaryStore = create<SanctuaryState>((set) => ({
       const nextConnection = buildConnection(state.activeFragmentId, fragmentId);
       const connectedFragmentIds = [...state.connectedFragmentIds, fragmentId];
       const connections = [...state.connections, nextConnection];
-      const constellationComplete = isConstellationComplete(fragmentConnectionOrder, connections);
+      const constellationComplete = isConstellationComplete(
+        constellation.connectionOrder,
+        connections,
+      );
 
       return {
         activeFragmentId: constellationComplete ? null : fragmentId,
@@ -131,15 +162,25 @@ export const useSanctuaryStore = create<SanctuaryState>((set) => ({
         connections,
         previewPoint: null,
         constellationComplete,
-        ...(constellationComplete ? chapterState(3) : {}),
+        ...(constellationComplete
+          ? {
+              ...chapterState(3),
+              currentNarration: constellation.completionNarration,
+            }
+          : {}),
       };
     }),
   completeConstellation: () =>
-    set({
-      activeFragmentId: null,
-      previewPoint: null,
-      constellationComplete: true,
-      ...chapterState(3),
+    set((state) => {
+      const constellation = getSanctuaryConstellation(state.activeConstellationId);
+
+      return {
+        activeFragmentId: null,
+        previewPoint: null,
+        constellationComplete: true,
+        ...chapterState(3),
+        currentNarration: constellation.completionNarration,
+      };
     }),
   resetConnectionFlow: () =>
     set({

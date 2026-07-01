@@ -10,6 +10,7 @@ import { LoadingOverlay } from "@/features/sanctuary/components/LoadingOverlay";
 import { MouseHint } from "@/features/sanctuary/components/MouseHint";
 import { NarrationPanel } from "@/features/sanctuary/components/NarrationPanel";
 import { SanctuaryErrorBoundary } from "@/features/sanctuary/components/SanctuaryErrorBoundary";
+import { sanctuaryCopy } from "@/features/sanctuary/data/content";
 import { sanctuarySceneConfig } from "@/features/sanctuary/data/sceneConfig";
 import { SanctuaryCanvas } from "@/features/sanctuary/scenes/SanctuaryCanvas";
 import { useSanctuaryStore } from "@/features/sanctuary/state/useSanctuaryStore";
@@ -56,7 +57,7 @@ export function SanctuaryExperience() {
       {!hasEntered ? <IntroOverlay onEnter={handleEnter} /> : null}
       {hasEntered ? <LoadingOverlay visible={!isSceneReady} /> : null}
       <div className="sanctuary-shell__ui">
-        <p className="sanctuary-shell__kicker">Stardust Sanctuary</p>
+        <p className="sanctuary-shell__kicker">{sanctuaryCopy.brand.eyebrow}</p>
         <div className="sanctuary-shell__chapter" aria-label="Current chapter">
           {currentChapterLabel}
         </div>

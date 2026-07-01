@@ -1,5 +1,6 @@
 "use client";
 
+import { sanctuaryCopy } from "@/features/sanctuary/data/content";
 import { useSanctuaryStore } from "@/features/sanctuary/state/useSanctuaryStore";
 
 export function ChapterAction() {
@@ -17,7 +18,7 @@ export function ChapterAction() {
         type="button"
         onClick={() => transitionToChapter(4)}
       >
-        安静离开
+        {sanctuaryCopy.actions.rest}
       </button>
     </div>
   );

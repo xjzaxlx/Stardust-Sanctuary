@@ -1,5 +1,7 @@
 "use client";
 
+import { sanctuaryCopy } from "@/features/sanctuary/data/content";
+
 type AudioToggleProps = {
   isMuted: boolean;
   isReady: boolean;
@@ -7,7 +9,7 @@ type AudioToggleProps = {
 };
 
 export function AudioToggle({ isMuted, isReady, onToggle }: AudioToggleProps) {
-  const label = isMuted ? "开启声音" : "静音";
+  const label = isMuted ? sanctuaryCopy.audio.muted : sanctuaryCopy.audio.unmuted;
 
   return (
     <button
@@ -17,7 +19,7 @@ export function AudioToggle({ isMuted, isReady, onToggle }: AudioToggleProps) {
       aria-pressed={!isMuted}
       aria-label={label}
     >
-      {isReady || isMuted ? label : "静音"}
+      {isReady || isMuted ? label : sanctuaryCopy.audio.pending}
     </button>
   );
 }
