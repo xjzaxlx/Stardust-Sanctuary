@@ -5,6 +5,7 @@ import { useRef } from "react";
 import * as THREE from "three";
 import type { AnxietyFragment } from "@/features/sanctuary/data/fragments";
 import { sanctuarySceneConfig } from "@/features/sanctuary/data/sceneConfig";
+import { useQualityPreset } from "@/features/sanctuary/utils/useQualityPreset";
 import { useSanctuaryStore } from "@/features/sanctuary/state/useSanctuaryStore";
 
 type FragmentMeshProps = {
@@ -31,6 +32,7 @@ export function FragmentMesh({
   const basePosition = useRef(new THREE.Vector3(...fragment.position));
   const driftPhase = fragment.emotionWeight * 8.7;
   const fragmentSoftness = sanctuarySceneConfig.artDirection.fragmentSoftness;
+  const qualityPreset = useQualityPreset();
   const fragmentGlowMultiplier = useSanctuaryStore(
     (state) => state.currentSceneTuning.fragmentGlowMultiplier,
   );
@@ -120,7 +122,7 @@ export function FragmentMesh({
         onPointerDown={handlePointerDown}
         onPointerOver={handlePointerOver}
         onPointerOut={handlePointerOut}
-        scale={2.3}
+        scale={qualityPreset.fragmentHitScale}
       >
         <sphereGeometry args={[fragment.size, 16, 16]} />
         <meshBasicMaterial transparent opacity={0} depthWrite={false} />

@@ -9,6 +9,7 @@ import { SanctuaryPostProcessing } from "@/features/sanctuary/scenes/SanctuaryPo
 import { SoftBackground } from "@/features/sanctuary/scenes/SoftBackground";
 import { StarDustField } from "@/features/sanctuary/scenes/StarDustField";
 import { useSanctuaryStore } from "@/features/sanctuary/state/useSanctuaryStore";
+import { useQualityPreset } from "@/features/sanctuary/utils/useQualityPreset";
 
 function CentralAnchor() {
   return (
@@ -27,6 +28,7 @@ function CentralAnchor() {
 }
 
 export function SanctuaryScene() {
+  const qualityPreset = useQualityPreset();
   const sparklesOpacity = useSanctuaryStore(
     (state) => state.currentSceneTuning.sparklesOpacity,
   );
@@ -37,7 +39,7 @@ export function SanctuaryScene() {
       <CameraRig />
       <StarDustField />
       <Sparkles
-        count={28}
+        count={qualityPreset.sparklesCount}
         scale={[5.2, 2.6, 3.6]}
         size={1.1}
         speed={0.08}

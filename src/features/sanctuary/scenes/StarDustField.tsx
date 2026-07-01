@@ -4,6 +4,7 @@ import { useFrame } from "@react-three/fiber";
 import { useMemo, useRef } from "react";
 import * as THREE from "three";
 import { sanctuarySceneConfig } from "@/features/sanctuary/data/sceneConfig";
+import { useQualityPreset } from "@/features/sanctuary/utils/useQualityPreset";
 import { useSanctuaryStore } from "@/features/sanctuary/state/useSanctuaryStore";
 
 function seededRandom(seed: number) {
@@ -19,10 +20,10 @@ function isInsideConstellationSpace(x: number, y: number) {
   );
 }
 
-function buildDustPositions() {
-  const values = new Float32Array(sanctuarySceneConfig.dust.count * 3);
+function buildDustPositions(count: number) {
+  const values = new Float32Array(count * 3);
 
-  for (let index = 0; index < sanctuarySceneConfig.dust.count; index += 1) {
+  for (let index = 0; index < count; index += 1) {
     const radius =
       sanctuarySceneConfig.dust.innerRadius +
       seededRandom(index + 1) *
@@ -47,7 +48,11 @@ function buildDustPositions() {
 export function StarDustField() {
   const pointsRef = useRef<THREE.Points>(null);
   const materialRef = useRef<THREE.PointsMaterial>(null);
-  const positions = useMemo(() => buildDustPositions(), []);
+  const qualityPreset = useQualityPreset();
+  const positions = useMemo(
+    () => buildDustPositions(qualityPreset.dustCount),
+    [qualityPreset.dustCount],
+  );
   const dustSpeedMultiplier = useSanctuaryStore(
     (state) => state.currentSceneTuning.dustSpeedMultiplier,
   );
@@ -66,7 +71,9 @@ export function StarDustField() {
     if (materialRef.current) {
       materialRef.current.opacity = THREE.MathUtils.lerp(
         materialRef.current.opacity,
-        dustOpacity * sanctuarySceneConfig.artDirection.dustOpacityScale,
+        dustOpacity *
+          sanctuarySceneConfig.artDirection.dustOpacityScale *
+          qualityPreset.dustOpacityScale,
         0.04,
       );
     }
@@ -82,7 +89,11 @@ export function StarDustField() {
         color="#c9dce8"
         size={sanctuarySceneConfig.dust.pointSize}
         transparent
-        opacity={sanctuarySceneConfig.dust.opacity * sanctuarySceneConfig.artDirection.dustOpacityScale}
+        opacity={
+          sanctuarySceneConfig.dust.opacity *
+          sanctuarySceneConfig.artDirection.dustOpacityScale *
+          qualityPreset.dustOpacityScale
+        }
         depthWrite={false}
       />
     </points>

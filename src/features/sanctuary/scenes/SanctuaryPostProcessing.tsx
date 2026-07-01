@@ -2,20 +2,20 @@
 
 import { Bloom, EffectComposer } from "@react-three/postprocessing";
 import { sanctuarySceneConfig } from "@/features/sanctuary/data/sceneConfig";
-import { usePostProcessingPreference } from "@/features/sanctuary/scenes/usePostProcessingPreference";
+import { useQualityPreset } from "@/features/sanctuary/utils/useQualityPreset";
 
 export function SanctuaryPostProcessing() {
-  const isPostProcessingEnabled = usePostProcessingPreference();
+  const qualityPreset = useQualityPreset();
   const config = sanctuarySceneConfig.postprocessing;
 
-  if (!isPostProcessingEnabled) {
+  if (!config.enabled || !qualityPreset.enableBloom) {
     return null;
   }
 
   return (
     <EffectComposer multisampling={0}>
       <Bloom
-        intensity={config.bloomIntensity}
+        intensity={config.bloomIntensity * qualityPreset.bloomIntensityScale}
         luminanceThreshold={config.luminanceThreshold}
         luminanceSmoothing={config.luminanceSmoothing}
         mipmapBlur={config.mipmapBlur}

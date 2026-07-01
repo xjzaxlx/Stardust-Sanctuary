@@ -41,8 +41,6 @@ export const sanctuarySceneConfig = {
   },
   postprocessing: {
     enabled: true,
-    mobileEnabled: false,
-    lowPerformanceEnabled: false,
     bloomIntensity: 0.38,
     luminanceThreshold: 0.82,
     luminanceSmoothing: 0.22,
