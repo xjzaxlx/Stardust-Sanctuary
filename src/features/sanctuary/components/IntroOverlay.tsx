@@ -18,9 +18,15 @@ export function IntroOverlay({ onEnter }: IntroOverlayProps) {
         <div className="sanctuary-intro__copy">
           <p>{introChapter.narration}</p>
         </div>
-        <button className="sanctuary-intro__button" type="button" onClick={onEnter}>
+        <button
+          className="sanctuary-intro__button"
+          type="button"
+          onClick={onEnter}
+          aria-label={sanctuaryCopy.intro.enterAriaLabel}
+        >
           {sanctuaryCopy.intro.enterButton}
         </button>
+        <p className="sanctuary-disclaimer">{sanctuaryCopy.accessibility.disclaimer}</p>
       </div>
     </section>
   );

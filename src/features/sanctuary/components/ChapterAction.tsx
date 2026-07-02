@@ -17,6 +17,7 @@ export function ChapterAction() {
         className="sanctuary-chapter-action__button"
         type="button"
         onClick={() => transitionToChapter(4)}
+        aria-label={sanctuaryCopy.actions.restAriaLabel}
       >
         {sanctuaryCopy.actions.rest}
       </button>

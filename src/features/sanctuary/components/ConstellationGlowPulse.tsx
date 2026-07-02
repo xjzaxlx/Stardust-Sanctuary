@@ -4,6 +4,7 @@ import { useFrame } from "@react-three/fiber";
 import { useEffect, useRef } from "react";
 import * as THREE from "three";
 import { sanctuarySceneConfig } from "@/features/sanctuary/data/sceneConfig";
+import { useQualityPreset } from "@/features/sanctuary/utils/useQualityPreset";
 
 type ConstellationGlowPulseProps = {
   active: boolean;
@@ -13,6 +14,7 @@ export function ConstellationGlowPulse({ active }: ConstellationGlowPulseProps) 
   const meshRef = useRef<THREE.Mesh>(null);
   const materialRef = useRef<THREE.MeshBasicMaterial>(null);
   const pulseStartRef = useRef<number | null>(null);
+  const qualityPreset = useQualityPreset();
 
   useEffect(() => {
     if (active) {
@@ -40,10 +42,11 @@ export function ConstellationGlowPulse({ active }: ConstellationGlowPulseProps) 
     const elapsed = clock.elapsedTime - pulseStartRef.current;
     const progress = THREE.MathUtils.clamp(elapsed / 1.35, 0, 1);
     const easeOut = 1 - Math.pow(1 - progress, 3);
+    const pulseScale = qualityPreset.motionScale;
 
     mesh.visible = progress < 1;
-    mesh.scale.setScalar(0.72 + easeOut * 2.7);
-    material.opacity = (1 - easeOut) * 0.14;
+    mesh.scale.setScalar(0.72 + easeOut * 2.7 * pulseScale);
+    material.opacity = (1 - easeOut) * 0.14 * pulseScale;
   });
 
   return (

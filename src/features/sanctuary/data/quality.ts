@@ -9,6 +9,7 @@ export type QualityPreset = {
   enableBloom: boolean;
   bloomIntensityScale: number;
   fragmentHitScale: number;
+  motionScale: number;
   glPowerPreference: WebGLPowerPreference;
 };
 
@@ -31,6 +32,7 @@ export const sanctuaryQualityPresets: Record<QualityPresetId, QualityPreset> = {
     enableBloom: true,
     bloomIntensityScale: 1,
     fragmentHitScale: 2.4,
+    motionScale: 1,
     glPowerPreference: "high-performance",
   },
   medium: {
@@ -42,6 +44,7 @@ export const sanctuaryQualityPresets: Record<QualityPresetId, QualityPreset> = {
     enableBloom: true,
     bloomIntensityScale: 0.58,
     fragmentHitScale: 2.8,
+    motionScale: 0.72,
     glPowerPreference: "high-performance",
   },
   low: {
@@ -53,6 +56,7 @@ export const sanctuaryQualityPresets: Record<QualityPresetId, QualityPreset> = {
     enableBloom: false,
     bloomIntensityScale: 0,
     fragmentHitScale: 3.25,
+    motionScale: 0.18,
     glPowerPreference: "low-power",
   },
 };

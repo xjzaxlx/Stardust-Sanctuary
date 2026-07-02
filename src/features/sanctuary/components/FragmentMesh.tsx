@@ -48,8 +48,10 @@ export function FragmentMesh({
     const time = clock.elapsedTime;
     const instability = connected ? 0.28 : 0.72 + fragment.emotionWeight * 0.28;
     const targetScale = connected ? 1.08 : near ? 1.15 : 1;
-    const rotationSpeed = connected ? 0.18 : near ? 0.11 : 0.34 + fragment.emotionWeight * 0.16;
-    const floatAmount = connected ? 0.025 : 0.065 * instability;
+    const rotationSpeed =
+      (connected ? 0.18 : near ? 0.11 : 0.34 + fragment.emotionWeight * 0.16) *
+      qualityPreset.motionScale;
+    const floatAmount = (connected ? 0.025 : 0.065 * instability) * qualityPreset.motionScale;
 
     group.scale.lerp(new THREE.Vector3(targetScale, targetScale, targetScale), 0.08);
     group.position.y =
@@ -58,7 +60,7 @@ export function FragmentMesh({
       basePosition.current.x + Math.cos(time * 0.38 + driftPhase) * floatAmount * 0.45;
     group.rotation.x += 0.004 * rotationSpeed;
     group.rotation.y += 0.006 * rotationSpeed;
-    group.rotation.z += connected ? 0.0008 : 0.0018 * instability;
+    group.rotation.z += (connected ? 0.0008 : 0.0018 * instability) * qualityPreset.motionScale;
 
     material.emissiveIntensity = THREE.MathUtils.lerp(
       material.emissiveIntensity,

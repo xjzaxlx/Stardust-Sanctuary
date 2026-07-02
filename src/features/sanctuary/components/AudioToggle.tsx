@@ -10,6 +10,7 @@ type AudioToggleProps = {
 
 export function AudioToggle({ isMuted, isReady, onToggle }: AudioToggleProps) {
   const label = isMuted ? sanctuaryCopy.audio.muted : sanctuaryCopy.audio.unmuted;
+  const ariaLabel = isMuted ? sanctuaryCopy.audio.ariaMuted : sanctuaryCopy.audio.ariaUnmuted;
 
   return (
     <button
@@ -17,7 +18,7 @@ export function AudioToggle({ isMuted, isReady, onToggle }: AudioToggleProps) {
       type="button"
       onClick={onToggle}
       aria-pressed={!isMuted}
-      aria-label={label}
+      aria-label={ariaLabel}
     >
       {isReady || isMuted ? label : sanctuaryCopy.audio.pending}
     </button>

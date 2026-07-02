@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import { sanctuaryCopy } from "@/features/sanctuary/data/content";
 
 export const metadata: Metadata = {
   title: "Stardust Sanctuary",
-  description: "A quiet WebGL constellation ritual for gathering scattered thoughts.",
+  description: sanctuaryCopy.meta.description,
 };
 
 export default function RootLayout({

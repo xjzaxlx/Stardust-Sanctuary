@@ -64,9 +64,13 @@ export function StarDustField() {
     }
 
     pointsRef.current.rotation.y =
-      clock.elapsedTime * sanctuarySceneConfig.dust.driftSpeed * dustSpeedMultiplier +
-      pointer.x * sanctuarySceneConfig.dust.parallaxRotation.y;
-    pointsRef.current.rotation.x = pointer.y * sanctuarySceneConfig.dust.parallaxRotation.x;
+      clock.elapsedTime *
+        sanctuarySceneConfig.dust.driftSpeed *
+        dustSpeedMultiplier *
+        qualityPreset.motionScale +
+      pointer.x * sanctuarySceneConfig.dust.parallaxRotation.y * qualityPreset.motionScale;
+    pointsRef.current.rotation.x =
+      pointer.y * sanctuarySceneConfig.dust.parallaxRotation.x * qualityPreset.motionScale;
 
     if (materialRef.current) {
       materialRef.current.opacity = THREE.MathUtils.lerp(
